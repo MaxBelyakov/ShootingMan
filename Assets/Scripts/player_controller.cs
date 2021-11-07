@@ -29,7 +29,7 @@ public class player_controller : MonoBehaviour {
         /* Moving left and right, stop near the boarder*/
         if ((rb.position.x >= -9) && (rb.position.x <= 9))
         {
-            rb.MovePosition(rb.position + Vector2.right * moveX * 15f * Time.deltaTime);
+            rb.MovePosition(rb.position + Vector2.right * moveX * 10f * Time.deltaTime);
         }
         else if ((rb.position.x < -9) && (moveX > 0))
             rb.position += new Vector2(0.05f, 0);
@@ -46,7 +46,8 @@ public class player_controller : MonoBehaviour {
     void flip()
     {
         FaceRight = !FaceRight;
-        transform.Rotate(0f, 180f, 0f);
+        Vector3 target = transform.rotation.eulerAngles;
+        transform.rotation = Quaternion.Euler(target.x, target.y + 180, target.z);
     }
 
 }
