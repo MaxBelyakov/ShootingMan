@@ -7,7 +7,17 @@ public class Duck_controller : MonoBehaviour {
 
     void Start()
     {
-        rb_duck.velocity = transform.right * 2f;
+        float speed = Random.Range(2f, 3f); 
+        rb_duck.velocity = transform.right * speed;   
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.name == "Died_zone")
+        {
+            Destroy(rb_duck.gameObject);
+            Respawn.ducks_lose = Respawn.ducks_lose + 1;
+        }
+        
+    }
 }
