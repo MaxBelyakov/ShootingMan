@@ -82,6 +82,7 @@
     <Compile Include="Assets\Scripts\Bullets.cs" />
     <Compile Include="Assets\Scripts\Duck_controller.cs" />
     <Compile Include="Assets\Scripts\Respawn.cs" />
+    <Compile Include="Assets\Scripts\bullet_box.cs" />
     <Compile Include="Assets\Scripts\player_controller.cs" />
     <Compile Include="Assets\Scripts\weapon.cs" />
   </ItemGroup>

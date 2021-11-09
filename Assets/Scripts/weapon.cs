@@ -10,28 +10,40 @@ public class weapon : MonoBehaviour {
     public GameObject shellPrefab;
     private bool reloading = false;
     public Text bullets_text;
-    public int bullets = 15;
+    public static int bullets = 15;
+    public static bool get_box_10 = false; /* drop box with bullets checker*/
+    public static bool explosion_bullet = true;
 
-    private void Start()
+    void Start()
     {
         bullets_text.text = bullets.ToString();
     }
 
-    void Update () {
-	    if (Input.GetButtonDown("Fire1") && !reloading && bullets != 0)
+    /* looking for shot or getting bullet box */
+    void Update() {
+        if (Input.GetButtonDown("Fire1") && !reloading && bullets != 0)
         {
             Shoot();
             reloading = true;
             StartCoroutine(waiter());
         }
-	}
+        if (get_box_10)
+        {
+            bullets = bullets + 10;
+            UpdateBullets();
+            get_box_10 = false;
+        }
+            
+    }
 
+    /* reloading */
     IEnumerator waiter()
     {
         yield return new WaitForSeconds(1);
         reloading = false;
     }
 
+    /* shooting */
     void Shoot()
     {
         var bullet_clone = Instantiate(bulletPrefab, firepoint.position, firepoint.rotation);
@@ -39,7 +51,17 @@ public class weapon : MonoBehaviour {
         Destroy(shell_clone, 1);
         Destroy(bullet_clone, 2);
 
-        bullets = bullets - 1;
+        if (!explosion_bullet)
+        {
+            bullets = bullets - 1;
+            UpdateBullets();
+        }
+        
+    }
+
+    /* draw new amount of bullets */
+    private void UpdateBullets()
+    {
         bullets_text.text = bullets.ToString();
         if (bullets <= 5)
             bullets_text.color = Color.red;

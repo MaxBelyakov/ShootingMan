@@ -6,6 +6,8 @@ public class Respawn : MonoBehaviour {
 
     public Transform Respawn_place;
     public GameObject duckPrefab;
+    public GameObject dronePrefab;
+    public GameObject boxPrefab;
     public int Lvl = 1;
     public int Lvl_ducks = 3;
     public int ducks_counter; /* how many ducks wait for respawn this level */
@@ -13,6 +15,7 @@ public class Respawn : MonoBehaviour {
     public static int ducks_lose = 0;
     public Text Lvl_text;
     public Text Lvl_stats;
+    public static bool bullets_drop = false; /* show is the bullet box in the game or not */
 
     void Start()
     {
@@ -50,13 +53,19 @@ public class Respawn : MonoBehaviour {
             StartCoroutine(waiter());
             ducks_counter = ducks_counter - 1;
         }
+            
     }
 
     /* Wait for new respawn random time */
     IEnumerator waiter()
     {
         yield return new WaitForSeconds(Random.Range(1, 5));
-        NewRespawn();
+
+        /* check for bullets, drop box if it needs */ 
+        if ((weapon.bullets <= 5) && !bullets_drop)
+            StartCoroutine(Bullets_drop());
+        else
+            NewRespawn();
     }
 
     /* Wait for new level */
@@ -66,6 +75,18 @@ public class Respawn : MonoBehaviour {
         Lvl_stats.gameObject.SetActive(true);
         yield return new WaitForSeconds(2);
         Start();
+    }
+
+    /* Drop the box in drone random position */
+    IEnumerator Bullets_drop()
+    {
+        Respawn_place.position = new Vector3(Respawn_place.position.x, 2.5f, Respawn_place.position.z);
+        var drone_clone = Instantiate(dronePrefab, Respawn_place.position, Respawn_place.rotation);
+        bullets_drop = true;
+        yield return new WaitForSeconds(Random.Range(1, 5));
+        
+        Instantiate(boxPrefab, drone_clone.transform.position, Respawn_place.rotation);
+        NewRespawn();
     }
 
 }
