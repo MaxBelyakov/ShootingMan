@@ -25,5 +25,6 @@ v.1.3 - 09.11.2021:
 - bullets drop in random place (when less than 5 bullets);
 - extra bullets (explose).
 
-v.1.4 - (todo):
-- extra bullets drop (random).
+v.1.4 - 10.11.2021:
+- extra bullets drop (random);
+- explosion rendering.
