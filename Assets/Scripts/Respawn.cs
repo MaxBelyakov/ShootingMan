@@ -8,6 +8,7 @@ public class Respawn : MonoBehaviour {
     public GameObject duckPrefab;
     public GameObject dronePrefab;
     public GameObject boxPrefab;
+    public GameObject explosion_boxPrefab;
     public int Lvl = 1;
     public int Lvl_ducks = 3;
     public int ducks_counter; /* how many ducks wait for respawn this level */
@@ -16,6 +17,7 @@ public class Respawn : MonoBehaviour {
     public Text Lvl_text;
     public Text Lvl_stats;
     public static bool bullets_drop = false; /* show is the bullet box in the game or not */
+    public static bool explosion_bullets_drop = false;
 
     void Start()
     {
@@ -63,9 +65,13 @@ public class Respawn : MonoBehaviour {
 
         /* check for bullets, drop box if it needs */ 
         if ((weapon.bullets <= 5) && !bullets_drop)
-            StartCoroutine(Bullets_drop());
+            StartCoroutine(Bullets_drop("bullets_box"));
         else
+        {
+            if ((Random.Range(1, 5) == 1) && !explosion_bullets_drop)
+                StartCoroutine(Bullets_drop("explosion_box"));
             NewRespawn();
+        }
     }
 
     /* Wait for new level */
@@ -78,14 +84,23 @@ public class Respawn : MonoBehaviour {
     }
 
     /* Drop the box in drone random position */
-    IEnumerator Bullets_drop()
+    IEnumerator Bullets_drop(string box_type)
     {
         Respawn_place.position = new Vector3(Respawn_place.position.x, 2.5f, Respawn_place.position.z);
         var drone_clone = Instantiate(dronePrefab, Respawn_place.position, Respawn_place.rotation);
-        bullets_drop = true;
+
+        if (box_type == "bullets_box")
+            bullets_drop = true;
+        else if (box_type == "explosion_box")
+            explosion_bullets_drop = true;
+
         yield return new WaitForSeconds(Random.Range(1, 5));
-        
-        Instantiate(boxPrefab, drone_clone.transform.position, Respawn_place.rotation);
+
+        if (box_type == "bullets_box")
+            Instantiate(boxPrefab, drone_clone.transform.position, Respawn_place.rotation);
+        else if (box_type == "explosion_box")
+            Instantiate(explosion_boxPrefab, drone_clone.transform.position, Respawn_place.rotation);
+
         NewRespawn();
     }
 

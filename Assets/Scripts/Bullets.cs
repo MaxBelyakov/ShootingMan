@@ -29,6 +29,7 @@ public class Bullets : MonoBehaviour {
         var explosion_object = Instantiate(ExplosionPrefab, gameObject.transform.position, gameObject.transform.rotation);
         Destroy(gameObject);
         Destroy(explosion_object, 1);
+        Respawn.explosion_bullets_drop = false;
     }
 
     /* Duck kill by bullet */

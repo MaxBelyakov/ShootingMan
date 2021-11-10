@@ -9,11 +9,15 @@ public class bullet_box : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
-            weapon.get_box_10 = true;
-            Respawn.bullets_drop = false;
+            if (gameObject.tag == "bullets_box")
+            {
+                weapon.get_box_10 = true;
+                Respawn.bullets_drop = false;
+            }
+            else if (gameObject.tag == "explosion_box")
+                weapon.explosion_bullet = true;
+
             Destroy(gameObject);
         }
     }
-
-
 }

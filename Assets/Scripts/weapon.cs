@@ -12,7 +12,7 @@ public class weapon : MonoBehaviour {
     public Text bullets_text;
     public static int bullets = 15;
     public static bool get_box_10 = false; /* drop box with bullets checker*/
-    public static bool explosion_bullet = true;
+    public static bool explosion_bullet = false;
 
     void Start()
     {
